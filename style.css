@@ -1,0 +1,307 @@
+/* * {
+  outline: 1px solid red;
+} */
+
+body {
+  background-color: #1e1e2e;
+  margin: 0;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+
+  height: 100dvh;
+  max-height: 850px;
+}
+
+/*      title       */
+.title {
+  font-size: 4rem;
+  margin-top: 20px;
+  font-family: "josefin sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  color: #cdd6f4;
+}
+
+/*    word grid      */
+.word-grid {
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
+  gap: 8px;
+  width: fit-content;
+}
+
+.word-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 9px;
+}
+
+.letter-box {
+  width: 50px;
+  height: 50px;
+  border: 3px solid #313244;
+  transition: transform 0.1s;
+  text-transform: uppercase;
+  font-size: 1.8rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #cdd6f4;
+  border-radius: 5px;
+}
+
+/*     Keyboard      */
+.keyboard {
+  display: grid;
+  grid-template-rows: repeat(3, fr);
+  width: 98%;
+  max-width: 480px;
+  margin-bottom: 1dvw;
+}
+button:focus {
+  outline: none;
+}
+.button-box {
+  height: 58px;
+  background-color: #7f849c;
+  border-radius: 5px;
+  color: #cdd6f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  font-size: 1.3rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  border: 0;
+  margin: 3px;
+}
+.row {
+  display: grid;
+  margin-bottom: 2px;
+}
+.row1 {
+  grid-template-columns: repeat(10, 1fr);
+}
+.row2 {
+  grid-template-columns: 1fr repeat(9, 2fr) 1fr;
+}
+.row3 {
+  grid-template-columns: 3fr repeat(7, 2fr) 3fr;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+.spacer {
+  background-color: transparent;
+}
+
+.enter-backspace {
+  flex-basis: 0;
+  font-size: 0.8rem;
+}
+.enter-backspace path {
+  fill: #cdd6f4;
+}
+
+/*  letter animation after guessing  */
+.wrong-letter {
+  background-color: #313244;
+}
+.present-letter {
+  background-color: #df8e1d;
+}
+.correct-letter {
+  background-color: #40a02b;
+}
+
+/*   letter box animation after guessing   */
+
+.wrong-guess {
+  animation: borderWrong 500ms ease-in-out forwards;
+}
+.present-guess {
+  animation: borderPresent 500ms ease-in-out forwards;
+}
+.correct-guess {
+  animation: borderCorrect 500ms ease-in-out forwards;
+}
+
+/*    Player messeges alterts     */
+.messeges {
+  position: absolute;
+  top: 100px;
+}
+.messeges > ul {
+  padding-left: 0;
+  margin-top: 0;
+}
+
+.alert,
+.alert-animation,
+.end-game {
+  background-color: #cdd6f4;
+  color: #1e1e2e;
+  font-size: 1rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  list-style: none;
+  border-radius: 5px;
+  padding: 0.8rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-top: 0;
+  z-index: 2000;
+  position: relative;
+  font-weight: bold;
+}
+
+.alert-animation {
+  animation: fadeout 1s ease-out;
+}
+
+.shake {
+  animation: shake 500ms linear;
+}
+.hard-shake {
+  border: 3px solid #40a02b;
+  background-color: #40a02b;
+  animation: hardShake 800ms ease-in;
+}
+
+/*  Animations  */
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes borderCorrect {
+  from {
+    transform: rotateX(0);
+    border: 3px solid #313244;
+    background-color: #1e1e2e;
+  }
+  49% {
+    border: 3px solid #313244;
+    background-color: #1e1e2e;
+  }
+  50% {
+    transform: rotateX(-90deg);
+    border: 3px solid #40a02b;
+    background-color: #40a02b;
+  }
+  to {
+    border: 3px solid #40a02b;
+    background-color: #40a02b;
+    transform: rotateX(0);
+  }
+}
+
+@keyframes borderPresent {
+  from {
+    transform: rotateX(0);
+    border: 3px solid #313244;
+    background-color: #1e1e2e;
+  }
+  49% {
+    border: 3px solid #313244;
+    background-color: #1e1e2e;
+  }
+  50% {
+    transform: rotateX(-90deg);
+    border: 3px solid #df8e1d;
+    background-color: #df8e1d;
+  }
+  to {
+    border: 3px solid #df8e1d;
+    background-color: #df8e1d;
+    transform: rotateX(0);
+  }
+}
+
+@keyframes borderWrong {
+  from {
+    transform: rotateX(0);
+    background-color: #1e1e2e;
+  }
+  49% {
+    background-color: #1e1e2e;
+  }
+  50% {
+    transform: rotateX(-90deg);
+    background-color: #313244;
+  }
+  to {
+    background-color: #313244;
+    transform: rotateX(0);
+  }
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate(-1px, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate(2px, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate(-4px, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate(4px, 0);
+  }
+}
+@keyframes hardShake {
+  25% {
+    transform: translate(0, -20px);
+  }
+
+  37.5% {
+    transform: translate(0, 5px);
+  }
+
+  50% {
+    transform: translate(0, -10px);
+  }
+  75% {
+    transform: translate(0, 2px);
+  }
+  to{
+    transform: translate(0, 0px);
+  }
+}
