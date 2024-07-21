@@ -1,9 +1,10 @@
 let wordGrid = document.querySelectorAll(".letter-box");
 let wordRows = document.querySelectorAll(".word-row");
 let toastList = document.querySelector("#messege-list");
-let date = Date.now();
+
+let date = Math.ceil(new Date().getTime() / 86400000);
 let todayWord =
-  WORDS[12546 + (Math.floor(date / 8.64e7) % (WORDS.length - 12546))];
+  WORDS[12546 + date % (WORDS.length - 12546)];
 let position = 0;
 let guessCount = 0;
 let word = [];
