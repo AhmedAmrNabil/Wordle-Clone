@@ -35,7 +35,10 @@ window.addEventListener("keydown", (e) => {
     return;
   }
   if (e.code !== `Key${e.key.toUpperCase()}` || position == 5) return;
-  pressLetter(e);
+  animatePop(wordGrid[5 * guessCount + position]);
+  wordGrid[5 * guessCount + position].innerText = e.key.toLowerCase();
+  word.push(e.key.toLowerCase());
+  position++;
 });
 
 for (let i = 0; i < 6; ++i) {
@@ -45,7 +48,7 @@ for (let i = 0; i < 6; ++i) {
       let element = document.querySelector(`button[data-key="${key}"]`);
       element.classList.add(value);
     }
-		checkWin();
+    checkWin();
   });
 }
 
@@ -114,7 +117,7 @@ function checkWord() {
   guessCount++;
   position = 0;
   word = [];
-	gridCellsStyle = [];
+  gridCellsStyle = [];
 }
 
 function animatePop(element) {
@@ -142,8 +145,8 @@ function shake() {
 function pressLetter(event) {
   if (position == 5) return;
   animatePop(wordGrid[5 * guessCount + position]);
-  wordGrid[5 * guessCount + position].innerText = event.key.toLowerCase();
-  word.push(event.key.toLowerCase());
+  wordGrid[5 * guessCount + position].innerText = event.innerText.toLowerCase();
+  word.push(event.innerText.toLowerCase());
   position++;
 }
 
