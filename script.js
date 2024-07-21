@@ -3,14 +3,13 @@ let wordRows = document.querySelectorAll(".word-row");
 let toastList = document.querySelector("#messege-list");
 let date = Date.now();
 let todayWord =
-  WORDS[
-    12546 + (Math.floor(date / (60 * 60 * 24 * 1000)) % (WORDS.length - 12546))
-  ];
+  WORDS[12546 + (Math.floor(date / 8.64e7) % (WORDS.length - 12546))];
 let position = 0;
 let row = 0;
 let word = [];
 let gameRunning = true;
-let changingLetters = {};
+let changingKeyboardLetters = {};
+let changingWordLetters = {};
 let animationRunning = false;
 let win = false;
 let correctGuesses = 0;
@@ -38,13 +37,12 @@ window.addEventListener("keydown", (e) => {
   wordGrid[5 * row + position].innerText = e.key.toLowerCase();
   word.push(e.key.toLowerCase());
   position++;
-  console.log(word.join(""));
 });
 
 for (let i = 0; i < 6; ++i) {
   wordGrid[i * 5 + 4].addEventListener("animationend", () => {
     animationRunning = false;
-    for (const [key, value] of Object.entries(changingLetters)) {
+    for (const [key, value] of Object.entries(changingKeyboardLetters)) {
       let element = document.querySelector(`button[data-key="${key}"]`);
       element.classList.add(value);
     }
@@ -74,52 +72,67 @@ for (let i = 0; i < 6; ++i) {
   });
 }
 
+function createAlert(messege) {
+  let toast = document.createElement("li");
+  toast.innerText = messege;
+  toast.classList.add("alert-animation");
+  toastList.insertBefore(toast, toastList.children[0]);
+  toast.addEventListener("animationend", () => {
+    toast.remove();
+  });
+}
+
 function checkWord() {
-  let currWord = todayWord;
   if (word.length != 5) {
     shake();
-    let toast = document.createElement("li");
-    toast.innerText = "Not enough letters";
-    toast.classList.add("alert-animation");
-    toastList.insertBefore(toast, toastList.children[0]);
-    toast.addEventListener("animationend", () => {
-      toast.remove();
-    });
-  } else if (!WORDS.includes(word.join(""))) {
-    shake();
-    let toast = document.createElement("li");
-    toast.innerText = "Not in word list";
-    toast.classList.add("alert-animation");
-    toastList.insertBefore(toast, toastList.children[0]);
-    toast.addEventListener("animationend", () => {
-      toast.remove();
-    });
-  } else {
-    animationRunning = true;
-    for (let i = 0; i < word.length; ++i) {
-      wordGrid[5 * row + i].style.animationDelay = `${250 * i}ms`;
-      if (word[i] == currWord[i]) {
-        changingLetters[word[i]] = "correct-letter";
-        wordGrid[5 * row + i].classList.add("correct-guess");
-        currWord = currWord.substring(0, i) + "_" + currWord.substring(i + 1);
-        correctGuesses++;
-      } else if (currWord.includes(word[i])) {
-        changingLetters[word[i]] = "present-letter";
-        wordGrid[5 * row + i].classList.add("present-guess");
-        currWord = currWord.substring(0, i) + "_" + currWord.substring(i + 1);
-      } else {
-        changingLetters[word[i]] = "wrong-letter";
-        wordGrid[5 * row + i].classList.add("wrong-guess");
-      }
-    }
-    if (correctGuesses == 5) {
-      win = true;
-    }
-    correctGuesses = 0;
-    row++;
-    position = 0;
-    word = [];
+    createAlert("Not enough letters");
+    return;
   }
+  if (!WORDS.includes(word.join(""))) {
+    shake();
+    createAlert("Not in word list");
+    return;
+  }
+
+  let currWord = todayWord;
+  let index = -1;
+  animationRunning = true;
+
+  for (let i = 0; i < word.length; ++i) {
+    wordGrid[5 * row + i].style.animationDelay = `${250 * i}ms`;
+    if (word[i] == currWord[i]) {
+      changingWordLetters[5 * row + i] = "correct-guess";
+      changingKeyboardLetters[word[i]] = "correct-letter";
+      currWord = currWord.substring(0, i) + "_" + currWord.substring(i + 1);
+      correctGuesses++;
+    }
+  }
+
+  for (let i = 0; i < word.length; ++i) {
+    index = currWord.search(word[i]);
+    if (changingWordLetters[5 * row + i] == "correct-guess") continue;
+    if (index != -1) {
+      changingKeyboardLetters[word[i]] = "present-letter";
+      changingWordLetters[5 * row + i] = "present-guess";
+      currWord =
+        currWord.substring(0, index) + "_" + currWord.substring(index + 1);
+    } else {
+      changingKeyboardLetters[word[i]] = "wrong-letter";
+      changingWordLetters[5 * row + i] = "wrong-guess";
+    }
+  }
+
+  for (const [key, value] of Object.entries(changingWordLetters)) {
+    wordGrid[key].classList.add(value);
+  }
+
+  if (correctGuesses == 5) {
+    win = true;
+  }
+  correctGuesses = 0;
+  row++;
+  position = 0;
+  word = [];
 }
 
 function animatePop(element) {
