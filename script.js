@@ -66,6 +66,7 @@ function checkWin() {
 }
 
 function checkWord() {
+  if(!gameRunning)return;
   if (word.length != 5) {
     shake();
     createToast("Not enough letters");
@@ -143,7 +144,7 @@ function shake() {
 }
 
 function pressLetter(event) {
-  if (position == 5) return;
+  if (position == 5 || !gameRunning) return;
   animatePop(wordGrid[5 * guessCount + position]);
   wordGrid[5 * guessCount + position].innerText = event.innerText.toLowerCase();
   word.push(event.innerText.toLowerCase());
@@ -151,11 +152,10 @@ function pressLetter(event) {
 }
 
 function deleteLetter() {
-  if (position > 0) {
-    position--;
-    wordGrid[5 * guessCount + position].innerText = "";
-    word.pop();
-  }
+  if (position <= 0 || !gameRunning) return;
+  position--;
+  wordGrid[5 * guessCount + position].innerText = "";
+  word.pop();
 }
 
 function winAnimation() {

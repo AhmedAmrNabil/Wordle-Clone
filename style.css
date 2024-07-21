@@ -31,6 +31,7 @@ body {
   font-family: var(--title-font-family);
   font-weight: bold;
   color: #cdd6f4;
+  user-select: none;
 }
 
 /*    word grid      */
@@ -61,6 +62,7 @@ body {
   align-items: center;
   color: #cdd6f4;
   border-radius: 5px;
+  user-select: none;
 }
 
 /*     Keyboard      */
@@ -88,6 +90,7 @@ button:focus {
   font-weight: 600;
   border: 0;
   margin: 3px;
+  user-select: none;
 }
 .row {
   display: grid;
@@ -101,6 +104,10 @@ button:focus {
 }
 .row3 {
   grid-template-columns: 3fr repeat(7, 2fr) 3fr;
+}
+
+button{
+  -webkit-tap-highlight-color: transparent;
 }
 
 button:hover {
