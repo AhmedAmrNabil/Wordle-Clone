@@ -147,8 +147,7 @@ button:hover {
 }
 
 .alert,
-.alert-animation,
-.end-game {
+.alert-animation {
   background-color: #cdd6f4;
   color: #1e1e2e;
   font-size: 1rem;
@@ -169,6 +168,7 @@ button:hover {
 .alert-animation {
   animation: fadeout 1s ease-out;
 }
+
 
 .shake {
   animation: shake 500ms linear;
