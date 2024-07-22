@@ -1,10 +1,11 @@
 let wordGrid = document.querySelectorAll(".letter-box");
 let wordRows = document.querySelectorAll(".word-row");
 let toastList = document.querySelector("#messege-list");
-
-let date = Math.ceil(new Date().getTime() / 86400000);
-let todayWord =
-  WORDS[12546 + date % (WORDS.length - 12546)];
+let currDate = new Date();
+let index = Math.floor(
+  (currDate.getTime() - currDate.getTimezoneOffset() * 60000) / 86400000
+);
+let todayWord = WORDS[12546 + (index % (WORDS.length - 12546))];
 let position = 0;
 let guessCount = 0;
 let word = [];
@@ -67,7 +68,7 @@ function checkWin() {
 }
 
 function checkWord() {
-  if(!gameRunning)return;
+  if (!gameRunning) return;
   if (word.length != 5) {
     shake();
     createToast("Not enough letters");
